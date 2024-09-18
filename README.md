@@ -57,6 +57,7 @@ Mivel a cikk célja az optimalizáció, így az algoritmust le kell lehessen fut
 #### Algoritmust illetően
   
 - A robotok tudjanak kommunikálni, hogy abban az esetben, hogyha egy utat blokkolnak egy másik robot elől, de csak várakoznak, akkor tudják úgy módosítani az útjukat, hogy vagy később érjenek oda, hogy a kérvényező robot elmehessen, vagy térjen az ezt követő legoptimálisabb útvonalra
+- A robotok várakozásának logikájának kitalálása és implememtálása
 
 ## Kapcsolódó dokumentumok
 
