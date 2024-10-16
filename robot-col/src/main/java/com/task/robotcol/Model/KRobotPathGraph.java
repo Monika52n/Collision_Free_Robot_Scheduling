@@ -24,7 +24,9 @@ public class KRobotPathGraph {
     }
 
     public void makeAMove() {
-        robots.getFirst().makeAMove();
+        for(Robot robot : robots) {
+            robot.makeAMove();
+        }
     }
 
     private void oneRobot(Robot robot) {

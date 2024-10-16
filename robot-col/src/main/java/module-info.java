@@ -6,4 +6,6 @@ module com.task.robotcol {
 
     opens com.task.robotcol to javafx.fxml;
     exports com.task.robotcol;
+    exports com.task.robotcol.Controller;
+    opens com.task.robotcol.Controller to javafx.fxml;
 }

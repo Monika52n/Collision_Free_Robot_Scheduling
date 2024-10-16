@@ -1,4 +1,4 @@
-package com.task.robotcol;
+package com.task.robotcol.Controller;
 
 import com.task.robotcol.Model.KRobotPathGraph;
 import com.task.robotcol.Model.Robot;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class HelloController {
     @FXML
     private Label welcomeText;
-
     ArrayList<RobotTask> tasks = new ArrayList<RobotTask>();
     ArrayList<Robot> robots = new ArrayList<>();
     KRobotPathGraph kRobotPathGraph;

@@ -1,15 +1,34 @@
 package com.task.robotcol.Model;
 
+import javafx.concurrent.Task;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
 import java.util.ArrayList;
+
+class RobotEventArgs extends Event {
+    private final int index;
+
+    public RobotEventArgs(int index) {
+        super(Event.ANY);
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+}
 
 public class Robot {
     private int index;
     private final int startIndex;
     private ArrayList<Integer> nodes;
     private ArrayList<RobotTask> tasks;
-    private Boolean startFromFirst;
+    private boolean startFromFirst;
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
-
+    private boolean isFinished = false;
+    private int stepsAndTasksTime = 0;
+    public EventHandler<RobotEventArgs> gameAdvanced;
     public Robot(int startIndex) {
         this.index = startIndex;
         this.startIndex = startIndex;
@@ -35,7 +54,8 @@ public class Robot {
         return tasks;
     }
 
-    public void makeAMove() {
+    public boolean makeAMove() {
+        if(isFinished || tasks.isEmpty()) return false;
         if(startFromFirst) {
             if(!tasks.getFirst().isFinished() && index!=tasks.getFirst().getIndex()) {
                 //meg nem ert elore a robot
@@ -63,5 +83,21 @@ public class Robot {
                 }
             }
         }
+        stepsAndTasksTime++;
+        setFinished();
+        gameAdvanced.handle(new RobotEventArgs(index));
+        return true;
+    }
+
+    private void setFinished() {
+        isFinished = tasks.stream().allMatch(RobotTask::isFinished);
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public int getStepsAndTasksTime() {
+        return stepsAndTasksTime;
     }
 }
