@@ -1,6 +1,7 @@
 package com.task.robotcol.Model;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static java.lang.Math.abs;
 
@@ -13,6 +14,20 @@ public class KRobotPathGraph {
         this.pathLength = pathLength;
         this.tasks = tasks;
         this.robots = robots;
+        robotTaskManager.sortRobotTaskByIndex(tasks);
+        devideTasksForRobots();
+    }
+
+    public KRobotPathGraph(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
+        this.pathLength = pathLength;
+        this.robots = new ArrayList<>();
+        this.tasks = new ArrayList<>();
+        for(Integer robotIndex : robotIndexes) {
+            robots.add(new Robot(robotIndex));
+        }
+        for (Map.Entry<Integer, Integer> task : tasksWithLength.entrySet()) {
+            tasks.add(new RobotTask(task.getKey(), task.getValue()));
+        }
         robotTaskManager.sortRobotTaskByIndex(tasks);
         devideTasksForRobots();
     }
