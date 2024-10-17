@@ -1,5 +1,7 @@
 package com.task.robotcol.Model;
 
+import javafx.event.EventHandler;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class KRobotPathGraph {
     }
 
     public KRobotPathGraph(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
+        //TODO: ellenőrizni, hogy a pathLength-hez megfelelnak a robot és task indexek, 0-tól indexelek
         this.pathLength = pathLength;
         this.robots = new ArrayList<>();
         this.tasks = new ArrayList<>();
@@ -32,8 +35,8 @@ public class KRobotPathGraph {
         devideTasksForRobots();
     }
 
-    public void devideTasksForRobots() {
-        //ez ugye meg nem jo, mert elo robotnak odadja az osszes taskot
+    private void devideTasksForRobots() {
+        //TODO: ez ugye meg nem jo, mert elo robotnak odadja az osszes taskot
         robots.getFirst().setTasks(tasks);
         oneRobot(robots.getFirst());
     }
@@ -55,7 +58,13 @@ public class KRobotPathGraph {
         }
     }
 
-    public Robot getFirstRobot() {
-        return robots.getFirst();
+    public void setStepHandlers(EventHandler<RobotEventArgs> stepHandler) {
+        for(Robot robot : robots) {
+            robot.gameAdvanced = stepHandler;
+        }
+    }
+
+    public int getPathLength() {
+        return pathLength;
     }
 }

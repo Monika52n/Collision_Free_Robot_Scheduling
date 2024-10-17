@@ -1,40 +1,8 @@
 package com.task.robotcol.Model;
-
-import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import java.util.ArrayList;
-
-class RobotEventArgs extends Event {
-    private final int index;
-    private Integer curTask = null;
-    private Integer curTaskLength = null;
-
-    public RobotEventArgs(int index, Integer curTask, Integer curTaskLength) {
-        super(Event.ANY);
-        this.index = index;
-        this.curTask = curTask;
-        this.curTaskLength = curTaskLength;
-    }
-
-    public RobotEventArgs(int index) {
-        super(Event.ANY);
-        this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public int getCurTask() {
-        return curTask;
-    }
-
-    public int getCurTaskLength() {
-        return curTaskLength;
-    }
-}
 
 public class Robot {
     private int index;
@@ -45,12 +13,7 @@ public class Robot {
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private boolean isFinished = false;
     private int stepsAndTasksTime = 0;
-    public EventHandler<RobotEventArgs> gameAdvanced = new EventHandler<RobotEventArgs>() {
-        @Override
-        public void handle(RobotEventArgs robotEventArgs) {
-
-        }
-    };
+    public EventHandler<RobotEventArgs> gameAdvanced;
     public Robot(int startIndex) {
         this.index = startIndex;
         this.startIndex = startIndex;
