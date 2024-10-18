@@ -8,10 +8,11 @@ import java.util.Map;
 import static java.lang.Math.abs;
 
 public class KRobotPathGraph {
-    private int pathLength;
-    private ArrayList<RobotTask> tasks;
-    private ArrayList<Robot> robots;
-    RobotTaskManager robotTaskManager = new RobotTaskManager();
+    private final int pathLength;
+    private final ArrayList<RobotTask> tasks;
+    private final ArrayList<Robot> robots;
+    private final RobotTaskManager robotTaskManager = new RobotTaskManager();
+    private final RobotManager robotManager = new RobotManager();
     public KRobotPathGraph(int pathLength, ArrayList<RobotTask> tasks, ArrayList<Robot> robots) {
         this.pathLength = pathLength;
         this.tasks = tasks;
@@ -25,11 +26,13 @@ public class KRobotPathGraph {
         this.pathLength = pathLength;
         this.robots = new ArrayList<>();
         this.tasks = new ArrayList<>();
-        for(Integer robotIndex : robotIndexes) {
-            robots.add(new Robot(robotIndex));
+        for(int i = 0; i< robotIndexes.size(); i++) {
+            robots.add(new Robot(robotIndexes.get(i), i));
         }
+        int taskNum = 0;
         for (Map.Entry<Integer, Integer> task : tasksWithLength.entrySet()) {
-            tasks.add(new RobotTask(task.getKey(), task.getValue()));
+            tasks.add(new RobotTask(task.getKey(), taskNum, task.getValue()));
+            taskNum++;
         }
         robotTaskManager.sortRobotTaskByIndex(tasks);
         devideTasksForRobots();
@@ -48,14 +51,7 @@ public class KRobotPathGraph {
     }
 
     private void oneRobot(Robot robot) {
-        if(abs(robot.getStartIndex()-robot.getTasks().getLast().getIndex())<=
-            abs(robot.getStartIndex()-robot.getTasks().getFirst().getIndex())) {
-            //elso utemezes
-            robot.setStartFromFirst(false);
-        } else {
-            //masodik utemezes
-            robot.setStartFromFirst(true);
-        }
+        robot.setStartFromFirst(abs(robot.getStartIndex() - robot.getTasks().getLast().getIndex()) > abs(robot.getStartIndex() - robot.getTasks().getFirst().getIndex()));
     }
 
     public void setStepHandlers(EventHandler<RobotEventArgs> stepHandler) {
@@ -66,5 +62,20 @@ public class KRobotPathGraph {
 
     public int getPathLength() {
         return pathLength;
+    }
+
+    public Integer getRobotNum(int index) {
+        Robot robot = robotManager.getRobotOnIndex(index, robots);
+        return robot!=null ? Integer.valueOf(robot.getRobotNum()) : null;
+    }
+
+    public Integer getTaskNum(int index) {
+        RobotTask task = robotTaskManager.getTaskOnIndex(index, tasks);
+        return task!=null ? Integer.valueOf(task.getTaskNum()) : null;
+    }
+
+    public Integer getTaskLength(int index) {
+        RobotTask task = robotTaskManager.getTaskOnIndex(index, tasks);
+        return task!=null ? Integer.valueOf(task.getRemainingLength()) : null;
     }
 }

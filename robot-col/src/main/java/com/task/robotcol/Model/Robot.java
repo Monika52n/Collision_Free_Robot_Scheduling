@@ -7,16 +7,19 @@ import java.util.ArrayList;
 public class Robot {
     private int index;
     private final int startIndex;
-    private ArrayList<Integer> nodes;
-    private ArrayList<RobotTask> tasks;
     private boolean startFromFirst;
-    private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private boolean isFinished = false;
+
+    //TODO: ezzel merjuk mennyi ido volt neki befejezni a feladatot, itt kene egy event ha vegzett
     private int stepsAndTasksTime = 0;
+    private final int robotNum;
+    private ArrayList<RobotTask> tasks;
+    private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     public EventHandler<RobotEventArgs> gameAdvanced;
-    public Robot(int startIndex) {
+    public Robot(int startIndex, int robotNum) {
         this.index = startIndex;
         this.startIndex = startIndex;
+        this.robotNum = robotNum;
     }
 
     public int getIndex() {
@@ -42,6 +45,7 @@ public class Robot {
     public boolean makeAMove() {
         if(isFinished || tasks.isEmpty()) return false;
         RobotTask currTask = null;
+        int prevIndex = index;
         if(startFromFirst) {
             if(!tasks.getFirst().isFinished() && index!=tasks.getFirst().getIndex()) {
                 //meg nem ert elore a robot
@@ -72,10 +76,11 @@ public class Robot {
         stepsAndTasksTime++;
         setFinished();
         if(currTask==null) {
-            gameAdvanced.handle(new RobotEventArgs(index));
+            gameAdvanced.handle(new RobotEventArgs(index, prevIndex));
         } else {
             gameAdvanced.handle(new RobotEventArgs(
                     index,
+                    prevIndex,
                     Integer.valueOf(currTask.getIndex()),
                     Integer.valueOf(currTask.getRemainingLength())));
         }
@@ -92,5 +97,9 @@ public class Robot {
 
     public int getStepsAndTasksTime() {
         return stepsAndTasksTime;
+    }
+
+    public int getRobotNum() {
+        return robotNum;
     }
 }

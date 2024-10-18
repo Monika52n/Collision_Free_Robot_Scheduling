@@ -1,17 +1,20 @@
 package com.task.robotcol.Model;
 
 public class RobotTask {
-    private int length;
+    private final int length;
     private int remainingLength;
     private final int index;
+    private final int taskNum;
 
-    public RobotTask(int index, int length) {
+    public RobotTask(int index, int taskNum, int length) {
         this.length = length;
         this.remainingLength = length;
         this.index = index;
+        this.taskNum = taskNum;
     }
 
-    public RobotTask(int index) {
+    public RobotTask(int index, int taskNum) {
+        this.taskNum = taskNum;
         this.length = 1;
         this.remainingLength = length;
         this.index = index;
@@ -29,8 +32,11 @@ public class RobotTask {
         return remainingLength;
     }
 
-    public int decrementRemainingLength() {
+    public void decrementRemainingLength() {
         --remainingLength;
-        return remainingLength;
+    }
+
+    public int getTaskNum() {
+        return taskNum;
     }
 }

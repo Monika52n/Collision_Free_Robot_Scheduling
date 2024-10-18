@@ -9,8 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
-
+public class RobotColApplication extends Application {
     private RobotColController controller;
 
     @Override
@@ -18,11 +17,8 @@ public class HelloApplication extends Application {
         FXMLLoader loader = new FXMLLoader();
         RobotColController controller = new RobotColController();
         loader.setController(controller);
-
-        VBox vbox = controller.createUI();
-        Scene scene = new Scene(vbox, 600, 300);
-        stage.setScene(scene);
-        stage.setTitle("Draw Circles with Button");
+        stage.setScene(controller.createUI());
+        stage.setTitle("Robots and Tasks");
         stage.show();
     }
 

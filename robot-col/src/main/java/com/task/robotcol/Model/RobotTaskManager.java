@@ -1,6 +1,5 @@
 package com.task.robotcol.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RobotTaskManager {
@@ -11,8 +10,7 @@ public class RobotTaskManager {
                 .orElse(null);
     }
 
-    public List<RobotTask> sortRobotTaskByIndex(List<RobotTask> tasks) {
+    public void sortRobotTaskByIndex(List<RobotTask> tasks) {
         tasks.sort((task1, task2) -> Integer.compare(task1.getIndex(), task2.getIndex()));
-        return tasks;
     }
 }

@@ -3,31 +3,38 @@ package com.task.robotcol.Model;
 import javafx.event.Event;
 
 public class RobotEventArgs extends Event {
-    private final int index;
-    private Integer curTask = null;
+    private final int nextIndex;
+    private final int prevIndex;
+    private Integer curTaskIndex = null;
     private Integer curTaskLength = null;
 
-    public RobotEventArgs(int index, Integer curTask, Integer curTaskLength) {
+    public RobotEventArgs(int nextIndex, int prevIndex, int curTaskIndex, int curTaskLength) {
         super(Event.ANY);
-        this.index = index;
-        this.curTask = curTask;
-        this.curTaskLength = curTaskLength;
+        this.nextIndex = nextIndex;
+        this.prevIndex = prevIndex;
+        this.curTaskIndex = Integer.valueOf(curTaskIndex);
+        this.curTaskLength = Integer.valueOf(curTaskLength);
     }
 
-    public RobotEventArgs(int index) {
+    public RobotEventArgs(int nextIndex, int prevIndex) {
         super(Event.ANY);
-        this.index = index;
+        this.nextIndex = nextIndex;
+        this.prevIndex = prevIndex;
     }
 
-    public int getIndex() {
-        return index;
+    public Integer getCurTaskIndex() {
+        return curTaskIndex;
     }
 
-    public int getCurTask() {
-        return curTask;
-    }
-
-    public int getCurTaskLength() {
+    public Integer getCurTaskLength() {
         return curTaskLength;
+    }
+
+    public int getNextIndex() {
+        return nextIndex;
+    }
+
+    public int getPrevIndex() {
+        return prevIndex;
     }
 }
