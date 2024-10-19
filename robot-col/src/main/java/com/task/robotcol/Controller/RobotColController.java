@@ -6,10 +6,12 @@ import com.task.robotcol.Model.RobotEventArgs;
 import com.task.robotcol.Model.RobotTask;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -21,18 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static javafx.scene.paint.Color.LIGHTBLUE;
+import static javafx.scene.paint.Color.*;
 
 public class RobotColController {
     KRobotPathGraph kRobotPathGraph;
-    @FXML
-    private Button forwardButton;
     private final List<PathNode> pathNodes = new ArrayList<>();
     private final int columns = 10;
     private final double circleRadius = 50.0;
+    private final double gaps = 120.0;
 
     private void setRobotsAndTasksInModel() {
         //TODO: bekerni a robotok indexet, taskok hosszat, helyet, es a graf hosszat
+        //TODO: inkabb bekerni vertexek szama,taskok szama, robotok szama, es random generator
         ArrayList<Integer> robotIndexes = new ArrayList<Integer>();
         Map<Integer, Integer> tasksWithLength = new HashMap<>();
         robotIndexes.add(Integer.valueOf(5));
@@ -62,45 +64,55 @@ public class RobotColController {
 
     public Scene createUI() {
         setRobotsAndTasksInModel();
+        return new Scene(createScrollPane(), 600, 400);
+    }
+
+    private Pane createPathNodesAndLines() {
         Pane pane = new Pane();
-
         for (int i = 0; i < kRobotPathGraph.getPathLength(); i++) {
-            PathNode pathNode = new PathNode(
-                    kRobotPathGraph.getRobotNum(i),
-                    kRobotPathGraph.getTaskNum(i),
-                    kRobotPathGraph.getTaskLength(i));
-
-            int x = (i % columns) * 120;
-            int y = (i / columns) * 120;
-            pathNode.setLayoutX(x);
-            pathNode.setLayoutY(y);
-
-            Line line = connectNodes(
-                    x,
-                    y,
-                    ((i+1) % columns) * 120,
-                    ((i + 1) / columns) * 120);
-            pane.getChildren().add(line);
-            pane.getChildren().add(pathNode);
-            pathNodes.add(pathNode);
+            if(i!=kRobotPathGraph.getPathLength()-1) {
+                pane.getChildren().add((new Edge(i, columns, gaps, circleRadius)).getLine());
+            }
+            pane.getChildren().add(createPathNodeOnIndex(i));
         }
+        return pane;
+    }
 
-        forwardButton = new Button("Step forward");
+    private PathNode createPathNodeOnIndex(int i) {
+        PathNode pathNode = new PathNode(
+            kRobotPathGraph.getRobotNum(i),
+            kRobotPathGraph.getTaskNum(i),
+            kRobotPathGraph.getTaskLength(i),
+            i,
+            columns,
+            gaps,
+            circleRadius);
+        pathNodes.add(pathNode);
+        return pathNode;
+    }
+    private ScrollPane createScrollPane() {
+        ScrollPane scrollPane = new ScrollPane(createVBox());
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        return  scrollPane;
+    }
+
+    private VBox createVBox() {
+        VBox vbox = new VBox(10, createPathNodesAndLines(), createForwardButton());
+        vbox.setPadding(new Insets(15,30,15,30));
+        BackgroundFill backgroundFill = new BackgroundFill(WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        vbox.setBackground(new Background(backgroundFill));
+        return vbox;
+    }
+
+    private Button createForwardButton() {
+        Button forwardButton = new Button("Step forward");
         forwardButton.setOnAction(event -> onHelloButtonClick());
-
-        VBox vbox = new VBox(10, pane, forwardButton);
-        return new Scene(vbox, 600, 400);
+        return forwardButton;
     }
 
     @FXML
-    protected void onHelloButtonClick() {
+    private void onHelloButtonClick() {
         kRobotPathGraph.makeAMove();
-    }
-
-    private Line connectNodes(double startX, double startY, double endX, double endY) {
-        Line line = new Line(startX+circleRadius, startY+circleRadius, endX+circleRadius, endY+circleRadius);
-        line.setStroke(Color.BLACK);
-        line.setStrokeWidth(2);
-        return line;
     }
 }
