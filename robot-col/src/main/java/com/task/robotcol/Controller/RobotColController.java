@@ -18,10 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javafx.scene.paint.Color.*;
 
@@ -37,10 +34,14 @@ public class RobotColController {
         //TODO: inkabb bekerni vertexek szama,taskok szama, robotok szama, es random generator
         ArrayList<Integer> robotIndexes = new ArrayList<Integer>();
         Map<Integer, Integer> tasksWithLength = new HashMap<>();
-        robotIndexes.add(Integer.valueOf(5));
-        tasksWithLength.put(Integer.valueOf(9),Integer.valueOf(1));
-        tasksWithLength.put(Integer.valueOf(7),Integer.valueOf(1));
-        tasksWithLength.put(Integer.valueOf(3),Integer.valueOf(1));
+        robotIndexes.add(Integer.valueOf(27));
+        for(int i = 0; i<50; i++) {
+            Random random = new Random();
+            int chance = random.nextInt(100);
+            if(chance < 30) {
+                tasksWithLength.put(Integer.valueOf(i),Integer.valueOf(1));
+            }
+        }
         kRobotPathGraph = new KRobotPathGraph(50, tasksWithLength, robotIndexes);
         kRobotPathGraph.setStepHandlers(new EventHandler<RobotEventArgs>() {
             @Override
