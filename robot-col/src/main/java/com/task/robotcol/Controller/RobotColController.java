@@ -28,21 +28,13 @@ public class RobotColController {
     private final int columns = 10;
     private final double circleRadius = 50.0;
     private final double gaps = 120.0;
+    private int pathLength;
+    private int robotCount;
+    private int taskCount;
+    private boolean isTaskLengthRandom;
 
     private void setRobotsAndTasksInModel() {
-        //TODO: bekerni a robotok indexet, taskok hosszat, helyet, es a graf hosszat
-        //TODO: inkabb bekerni vertexek szama,taskok szama, robotok szama, es random generator
-        ArrayList<Integer> robotIndexes = new ArrayList<Integer>();
-        Map<Integer, Integer> tasksWithLength = new HashMap<>();
-        robotIndexes.add(Integer.valueOf(27));
-        for(int i = 0; i<50; i++) {
-            Random random = new Random();
-            int chance = random.nextInt(100);
-            if(chance < 30) {
-                tasksWithLength.put(Integer.valueOf(i),Integer.valueOf(1));
-            }
-        }
-        kRobotPathGraph = new KRobotPathGraph(50, tasksWithLength, robotIndexes);
+        kRobotPathGraph = new KRobotPathGraph(50, placeTasks(), placeRobots());
         kRobotPathGraph.setStepHandlers(new EventHandler<RobotEventArgs>() {
             @Override
             public void handle(RobotEventArgs robotEventArgs) {
@@ -63,7 +55,39 @@ public class RobotColController {
         });
     }
 
-    public Scene createUI() {
+    private ArrayList<Integer> placeRobots() {
+        Random random = new Random();
+        Set<Integer> uniquePositions = new HashSet<>();
+
+        while (uniquePositions.size() < robotCount) {
+            uniquePositions.add(Integer.valueOf(random.nextInt(pathLength)));
+        }
+
+        return new ArrayList<Integer>(uniquePositions);
+    }
+
+    private Map<Integer, Integer> placeTasks() {
+        Random random = new Random();
+        Map<Integer, Integer> uniquePositions = new HashMap<Integer, Integer>();
+        int taskLength;
+        if (isTaskLengthRandom) {
+            taskLength = random.nextInt(15) + 1;
+        } else {
+            taskLength = 1;
+        }
+
+        while (uniquePositions.size() < taskCount) {
+            uniquePositions.put(Integer.valueOf(random.nextInt(pathLength)), Integer.valueOf(taskLength));
+        }
+
+        return uniquePositions;
+    }
+
+    public Scene initializeGraph(int pathLength, int robotCount, int taskCount, boolean isTaskLengthRandom) {
+        this.pathLength = pathLength;
+        this.robotCount = robotCount;
+        this.taskCount = taskCount;
+        this.isTaskLengthRandom = isTaskLengthRandom;
         setRobotsAndTasksInModel();
         return new Scene(createScrollPane(), 600, 400);
     }

@@ -1,6 +1,7 @@
 package com.task.robotcol;
 
 import com.task.robotcol.Controller.RobotColController;
+import com.task.robotcol.Controller.RobotStage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,15 +11,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RobotColApplication extends Application {
-    private RobotColController controller;
-
+    RobotStage robotStage;
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        RobotColController controller = new RobotColController();
-        loader.setController(controller);
-        stage.setScene(controller.createUI());
         stage.setTitle("Robots and Tasks");
+        robotStage = new RobotStage(stage);
         stage.show();
     }
 
