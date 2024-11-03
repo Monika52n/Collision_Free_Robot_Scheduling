@@ -81,7 +81,6 @@ public class KRobotPathGraph {
 
         // Intervallumok létrehozása: feladatokat egyenletesen osztjuk el
         int tasksPerRobot = (int) Math.ceil((double) tasks.size() / robots.size());
-
         for (int i = 0; i < tasks.size(); i++) {
             int robotIndex = i / tasksPerRobot;
             if (robotIndex < robots.size()) {
@@ -89,12 +88,63 @@ public class KRobotPathGraph {
             }
         }
 
+        // Átlagos feladathossz kiszámítása
+        double avgTaskLength = tasks.stream().mapToInt(RobotTask::getLength).average().orElse(0);
+        double egyensulyKuszob = (avgTaskLength * 0.2); // Egyensúlyi küszöb kiszámítása
+
+        // Feladatok újraelosztása a küszöb alapján
+        for (int i = 0; i < robots.size() - 1; i++) {
+            int currentRobotLoad = robotTasks[i].stream().mapToInt(RobotTask::getLength).sum();
+            int nextRobotLoad = robotTasks[i + 1].stream().mapToInt(RobotTask::getLength).sum();
+            int loadDifference = Math.abs(currentRobotLoad - nextRobotLoad);
+
+            // Ellenőrizzük, hogy a terhelés különbsége meghaladja-e a küszöböt
+            if (loadDifference > egyensulyKuszob) {
+                // Mozgassunk feladatot a nagyobb terhelésű robotról a kisebbre
+                if (currentRobotLoad > nextRobotLoad) {
+                    // Keresünk egy feladatot a jelenlegi robot legutolsó feladatából
+                    RobotTask taskToMove = robotTasks[i].remove(robotTasks[i].size() - 1);
+                    robotTasks[i + 1].add(taskToMove);
+                } else {
+                    RobotTask taskToMove = robotTasks[i + 1].remove(robotTasks[i + 1].size() - 1);
+                    robotTasks[i].add(taskToMove);
+                }
+            }
+        }
+
+        // Megpróbáljuk optimalizálni a feladatok elosztását úgy, hogy a terhelés kiegyenlítése mellett a szomszéd robotok közötti feladatátadást is támogassuk
+        for (int i = 0; i < robots.size(); i++) {
+            int currentRobotLoad = robotTasks[i].stream().mapToInt(RobotTask::getLength).sum();
+
+            // Ellenőrizzük a szomszéd robotok terhelését
+            if (i > 0) { // Bal oldali robot
+                int leftRobotLoad = robotTasks[i - 1].stream().mapToInt(RobotTask::getLength).sum();
+                if (currentRobotLoad > leftRobotLoad + egyensulyKuszob) {
+                    // Mozgassunk feladatot a bal oldali robotról a jelenlegi robotra
+                    RobotTask taskToMove = robotTasks[i - 1].remove(robotTasks[i - 1].size() - 1);
+                    robotTasks[i].add(taskToMove);
+                }
+            }
+
+            if (i < robots.size() - 1) { // Jobb oldali robot
+                int rightRobotLoad = robotTasks[i + 1].stream().mapToInt(RobotTask::getLength).sum();
+                if (currentRobotLoad < rightRobotLoad - egyensulyKuszob) {
+                    // Mozgassunk feladatot a jelenlegi robotról a jobb oldali robotra
+                    RobotTask taskToMove = robotTasks[i + 1].remove(0); // A legelső feladatot áthelyezzük
+                    robotTasks[i].add(taskToMove);
+                }
+            }
+        }
+
         // Feladatok kiosztása a robotokhoz
         for (int i = 0; i < robots.size(); i++) {
             robots.get(i).setTasks(robotTasks[i]);
         }
+
         writeAssignmentsToFile("task_assignments.txt");
     }
+
+
     //writeAssignmentsToFile("task_assignments.txt");
 
 

@@ -34,7 +34,8 @@ public class RobotColController {
         //TODO: inkabb bekerni vertexek szama,taskok szama, robotok szama, es random generator
         ArrayList<Integer> robotIndexes = new ArrayList<Integer>();
         Map<Integer, Integer> tasksWithLength = new HashMap<>();
-        robotIndexes.add(Integer.valueOf(27));
+       // robotIndexes.add(Integer.valueOf(3));
+       // robotIndexes.add(Integer.valueOf(27));
         robotIndexes.add(Integer.valueOf(34));
         robotIndexes.add(Integer.valueOf(36));
         for(int i = 0; i<50; i++) {
