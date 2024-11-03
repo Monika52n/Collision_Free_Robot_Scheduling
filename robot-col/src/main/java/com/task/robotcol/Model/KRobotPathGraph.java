@@ -1,9 +1,13 @@
 package com.task.robotcol.Model;
 
 import javafx.event.EventHandler;
-
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Comparator;
+import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -11,6 +15,8 @@ public class KRobotPathGraph {
     private final int pathLength;
     private final ArrayList<RobotTask> tasks;
     private final ArrayList<Robot> robots;
+    private ArrayList<RobotTask>[] robotTasks;
+
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
     public KRobotPathGraph(int pathLength, ArrayList<RobotTask> tasks, ArrayList<Robot> robots) {
@@ -38,11 +44,59 @@ public class KRobotPathGraph {
         devideTasksForRobots();
     }
 
-    private void devideTasksForRobots() {
-        //TODO: ez ugye meg nem jo, mert elo robotnak odadja az osszes taskot
+    /*private void devideTasksForRobots() {
+        //TODO: ez ugye meg nem jo, mert az elso robotnak odadja az osszes taskot
         robots.getFirst().setTasks(tasks);
         oneRobot(robots.getFirst());
+    }*/
+    private void writeAssignmentsToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            // Log initial task positions
+            writer.write("Initial Task Positions:\n");
+            for (RobotTask task : tasks) {
+                writer.write("Task " + task.getTaskNum() + " is at index " + task.getIndex() + " with length " + task.getLength() + "\n");
+            }
+            writer.write("\nTask Assignments:\n");
+
+            // Log task assignments
+            for (int i = 0; i < robots.size(); i++) {
+                Robot robot = robots.get(i);
+                writer.write("Robot " + robot.getRobotNum() + " has been assigned the following tasks:\n");
+                for (RobotTask assignedTask : robot.getTasks()) {
+                    writer.write("- Task " + assignedTask.getTaskNum() + " at index " + assignedTask.getIndex() + "\n");
+                }
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void devideTasksForRobots() {
+        tasks.sort(Comparator.comparingInt(RobotTask::getIndex)); // Rendezés pozíció szerint
+        ArrayList<RobotTask>[] robotTasks = new ArrayList[robots.size()];
+        for (int i = 0; i < robots.size(); i++) {
+            robotTasks[i] = new ArrayList<>();
+        }
+
+        // Intervallumok létrehozása: feladatokat egyenletesen osztjuk el
+        int tasksPerRobot = (int) Math.ceil((double) tasks.size() / robots.size());
+
+        for (int i = 0; i < tasks.size(); i++) {
+            int robotIndex = i / tasksPerRobot;
+            if (robotIndex < robots.size()) {
+                robotTasks[robotIndex].add(tasks.get(i));
+            }
+        }
+
+        // Feladatok kiosztása a robotokhoz
+        for (int i = 0; i < robots.size(); i++) {
+            robots.get(i).setTasks(robotTasks[i]);
+        }
+        writeAssignmentsToFile("task_assignments.txt");
+    }
+    //writeAssignmentsToFile("task_assignments.txt");
+
 
     public void makeAMove() {
         for(Robot robot : robots) {
