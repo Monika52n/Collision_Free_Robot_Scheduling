@@ -4,10 +4,7 @@ import javafx.event.EventHandler;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -19,25 +16,31 @@ public class KRobotPathGraph {
 
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
-    public KRobotPathGraph(int pathLength, ArrayList<RobotTask> tasks, ArrayList<Robot> robots) {
-        this.pathLength = pathLength;
-        this.tasks = tasks;
-        this.robots = robots;
-        robotTaskManager.sortRobotTaskByIndex(tasks);
-        devideTasksForRobots();
+    public EventHandler<SimulationEndedEventArgs> simulationEnded;
+
+    private void revise(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
+        if(pathLength<1) throw new IllegalArgumentException("Path length must be greater than 1.");
+        if(tasksWithLength==null || robotIndexes==null || tasksWithLength.isEmpty() || robotIndexes.isEmpty()) {
+            throw  new IllegalArgumentException("Number of tasks and robots must be greater than 1.");
+        }
     }
 
     public KRobotPathGraph(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
-        //TODO: ellenőrizni, hogy a pathLength-hez megfelelnak a robot és task indexek, 0-tól indexelek
+        revise(pathLength, tasksWithLength, robotIndexes);
         this.pathLength = pathLength;
         this.robots = new ArrayList<>();
         this.tasks = new ArrayList<>();
         for(int i = 0; i< robotIndexes.size(); i++) {
-            robots.add(new Robot(robotIndexes.get(i), i));
+            int robotIndex = robotIndexes.get(i);
+            if(robotIndex<0 || robotIndex>=pathLength) throw new IllegalArgumentException("Incorrect robot index!");
+            robots.add(new Robot(robotIndex, i));
         }
         int taskNum = 0;
         for (Map.Entry<Integer, Integer> task : tasksWithLength.entrySet()) {
-            tasks.add(new RobotTask(task.getKey(), taskNum, task.getValue()));
+            int taskIndex = task.getKey();
+            int taskLength = task.getValue();
+            if(taskIndex<0 || taskIndex>=pathLength || taskLength<1) throw new IllegalArgumentException("Incorrect task index or length!");
+            tasks.add(new RobotTask(taskIndex, taskNum, taskLength));
             taskNum++;
         }
         robotTaskManager.sortRobotTaskByIndex(tasks);
@@ -73,6 +76,7 @@ public class KRobotPathGraph {
     }
 
     private void devideTasksForRobots() {
+        robots.sort(Comparator.comparingInt(Robot::getStartIndex));
         tasks.sort(Comparator.comparingInt(RobotTask::getIndex)); // Rendezés pozíció szerint
         ArrayList<RobotTask>[] robotTasks = new ArrayList[robots.size()];
         for (int i = 0; i < robots.size(); i++) {
@@ -103,11 +107,11 @@ public class KRobotPathGraph {
                 // Mozgassunk feladatot a nagyobb terhelésű robotról a kisebbre
                 if (currentRobotLoad > nextRobotLoad) {
                     // Keresünk egy feladatot a jelenlegi robot legutolsó feladatából
-                    RobotTask taskToMove = robotTasks[i].remove(robotTasks[i].size() - 1);
-                    robotTasks[i + 1].add(taskToMove);
+                    RobotTask taskToMove = robotTasks[i].remove(robotTasks[i].size() - 1); // Legutolsó feladat
+                    insertTaskInOrder(robotTasks[i + 1], taskToMove); // Beszúrás rendezett listába
                 } else {
-                    RobotTask taskToMove = robotTasks[i + 1].remove(robotTasks[i + 1].size() - 1);
-                    robotTasks[i].add(taskToMove);
+                    RobotTask taskToMove = robotTasks[i + 1].remove(0); // Legelső feladat
+                    insertTaskInOrder(robotTasks[i], taskToMove); // Beszúrás rendezett listába
                 }
             }
         }
@@ -121,8 +125,8 @@ public class KRobotPathGraph {
                 int leftRobotLoad = robotTasks[i - 1].stream().mapToInt(RobotTask::getLength).sum();
                 if (currentRobotLoad > leftRobotLoad + egyensulyKuszob) {
                     // Mozgassunk feladatot a bal oldali robotról a jelenlegi robotra
-                    RobotTask taskToMove = robotTasks[i - 1].remove(robotTasks[i - 1].size() - 1);
-                    robotTasks[i].add(taskToMove);
+                    RobotTask taskToMove = robotTasks[i - 1].remove(robotTasks[i - 1].size() - 1); // Legutolsó feladat
+                    insertTaskInOrder(robotTasks[i], taskToMove); // Beszúrás rendezett listába
                 }
             }
 
@@ -130,8 +134,8 @@ public class KRobotPathGraph {
                 int rightRobotLoad = robotTasks[i + 1].stream().mapToInt(RobotTask::getLength).sum();
                 if (currentRobotLoad < rightRobotLoad - egyensulyKuszob) {
                     // Mozgassunk feladatot a jelenlegi robotról a jobb oldali robotra
-                    RobotTask taskToMove = robotTasks[i + 1].remove(0); // A legelső feladatot áthelyezzük
-                    robotTasks[i].add(taskToMove);
+                    RobotTask taskToMove = robotTasks[i + 1].remove(0); // Legelső feladat
+                    insertTaskInOrder(robotTasks[i], taskToMove); // Beszúrás rendezett listába
                 }
             }
         }
@@ -144,13 +148,28 @@ public class KRobotPathGraph {
         writeAssignmentsToFile("task_assignments.txt");
     }
 
-
+    // Segédmetódus a rendezett beszúráshoz
+    private void insertTaskInOrder(ArrayList<RobotTask> tasks, RobotTask task) {
+        int index = 0;
+        while (index < tasks.size() && tasks.get(index).getIndex() < task.getIndex()) {
+            index++;
+        }
+        tasks.add(index, task); // Beszúrás a megfelelő helyre
+    }
+    
     //writeAssignmentsToFile("task_assignments.txt");
 
 
     public void makeAMove() {
+        boolean isFinished = false;
+        int steps = 0;
         for(Robot robot : robots) {
             robot.makeAMove();
+            if(robot.isFinished()) isFinished = true;
+            steps += robot.getStepsAndTasksTime();
+        }
+        if(isFinished) {
+            simulationEnded.handle(new SimulationEndedEventArgs(steps));
         }
     }
 
