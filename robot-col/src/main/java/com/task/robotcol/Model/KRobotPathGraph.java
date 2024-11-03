@@ -14,25 +14,30 @@ public class KRobotPathGraph {
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
     public EventHandler<SimulationEndedEventArgs> simulationEnded;
-    public KRobotPathGraph(int pathLength, ArrayList<RobotTask> tasks, ArrayList<Robot> robots) {
-        this.pathLength = pathLength;
-        this.tasks = tasks;
-        this.robots = robots;
-        robotTaskManager.sortRobotTaskByIndex(tasks);
-        devideTasksForRobots();
+
+    private void revise(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
+        if(pathLength<1) throw new IllegalArgumentException("Path length must be greater than 1.");
+        if(tasksWithLength==null || robotIndexes==null || tasksWithLength.isEmpty() || robotIndexes.isEmpty()) {
+            throw  new IllegalArgumentException("Number of tasks and robots must be greater than 1.");
+        }
     }
 
     public KRobotPathGraph(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
-        //TODO: ellenőrizni, hogy a pathLength-hez megfelelnak a robot és task indexek, 0-tól indexelek
+        revise(pathLength, tasksWithLength, robotIndexes);
         this.pathLength = pathLength;
         this.robots = new ArrayList<>();
         this.tasks = new ArrayList<>();
         for(int i = 0; i< robotIndexes.size(); i++) {
-            robots.add(new Robot(robotIndexes.get(i), i));
+            int robotIndex = robotIndexes.get(i);
+            if(robotIndex<0 || robotIndex>=pathLength) throw new IllegalArgumentException("Incorrect robot index!");
+            robots.add(new Robot(robotIndex, i));
         }
         int taskNum = 0;
         for (Map.Entry<Integer, Integer> task : tasksWithLength.entrySet()) {
-            tasks.add(new RobotTask(task.getKey(), taskNum, task.getValue()));
+            int taskIndex = task.getKey();
+            int taskLength = task.getValue();
+            if(taskIndex<0 || taskIndex>=pathLength || taskLength<1) throw new IllegalArgumentException("Incorrect task index or length!");
+            tasks.add(new RobotTask(taskIndex, taskNum, taskLength));
             taskNum++;
         }
         robotTaskManager.sortRobotTaskByIndex(tasks);

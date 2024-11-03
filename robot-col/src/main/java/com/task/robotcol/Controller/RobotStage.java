@@ -73,7 +73,10 @@ public class RobotStage {
                 int robots = Integer.parseInt(robotsInput.getText());
                 boolean customParam = customParamCheckBox.isSelected();
 
-                if (vertices < robots || vertices < tasks) {
+                if(robots < 1 || tasks < 1) {
+                    errorLabel.setText("Error: The number of robots and tasks must be at least 1");
+                }
+                else if (vertices < robots || vertices < tasks) {
                     errorLabel.setText("Error: The number of vertices must be greater than or equal to the number of robots and tha number of tasks.");
                 } else {
                     errorLabel.setText("");

@@ -9,8 +9,6 @@ public class Robot {
     private final int startIndex;
     private boolean startFromFirst;
     private boolean isFinished = false;
-
-    //TODO: ezzel merjuk mennyi ido volt neki befejezni a feladatot, itt kene egy event ha vegzett
     private int stepsAndTasksTime = 0;
     private final int robotNum;
     private ArrayList<RobotTask> tasks = new ArrayList<>();
