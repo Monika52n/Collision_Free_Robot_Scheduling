@@ -13,6 +13,7 @@ public class KRobotPathGraph {
     private final ArrayList<Robot> robots;
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
+    public EventHandler<SimulationEndedEventArgs> simulationEnded;
     public KRobotPathGraph(int pathLength, ArrayList<RobotTask> tasks, ArrayList<Robot> robots) {
         this.pathLength = pathLength;
         this.tasks = tasks;
@@ -45,8 +46,15 @@ public class KRobotPathGraph {
     }
 
     public void makeAMove() {
+        boolean isFinished = false;
+        int steps = 0;
         for(Robot robot : robots) {
             robot.makeAMove();
+            if(robot.isFinished()) isFinished = true;
+            steps += robot.getStepsAndTasksTime();
+        }
+        if(isFinished) {
+            simulationEnded.handle(new SimulationEndedEventArgs(steps));
         }
     }
 

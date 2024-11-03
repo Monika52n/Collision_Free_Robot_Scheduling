@@ -13,8 +13,9 @@ public class Robot {
     //TODO: ezzel merjuk mennyi ido volt neki befejezni a feladatot, itt kene egy event ha vegzett
     private int stepsAndTasksTime = 0;
     private final int robotNum;
-    private ArrayList<RobotTask> tasks;
+    private ArrayList<RobotTask> tasks = new ArrayList<>();
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
+    private boolean isRobotNotAtStartPosition = true;
     public EventHandler<RobotEventArgs> gameAdvanced;
     public Robot(int startIndex, int robotNum) {
         this.index = startIndex;
@@ -32,6 +33,10 @@ public class Robot {
 
     public void setTasks(ArrayList<RobotTask> tasks) {
         this.tasks = tasks;
+        if((startFromFirst && tasks.getFirst().getIndex()>=index) ||
+           (!startFromFirst && tasks.getLast().getIndex()<=index)) {
+            isRobotNotAtStartPosition = false;
+        }
     }
 
     public void setStartFromFirst(Boolean startFromFirst) {
@@ -47,9 +52,10 @@ public class Robot {
         RobotTask currTask = null;
         int prevIndex = index;
         if(startFromFirst) {
-            if(!tasks.getFirst().isFinished() && index!=tasks.getFirst().getIndex()) {
+            if(isRobotNotAtStartPosition) {
                 //meg nem ert elore a robot
                 index--;
+                isRobotNotAtStartPosition = !tasks.getFirst().isFinished() && index!=tasks.getFirst().getIndex();
             } else {
                 //elore ert a robot
                 currTask = robotTaskManager.getTaskOnIndex(index, tasks);
@@ -61,8 +67,9 @@ public class Robot {
                 }
             }
         } else {
-            if(!tasks.getLast().isFinished() && index != (tasks.getLast().getIndex())) {
+            if(isRobotNotAtStartPosition) {
                 index++;
+                isRobotNotAtStartPosition = !tasks.getLast().isFinished() && index != (tasks.getLast().getIndex());
             } else {
                 currTask = robotTaskManager.getTaskOnIndex(index, tasks);
                 if(currTask!=null && currTask.getRemainingLength()>0) {
@@ -75,6 +82,11 @@ public class Robot {
         }
         stepsAndTasksTime++;
         setFinished();
+        handleGameStep(currTask, prevIndex);
+        return true;
+    }
+
+    private void handleGameStep(RobotTask currTask, int prevIndex) {
         if(currTask==null) {
             gameAdvanced.handle(new RobotEventArgs(index, prevIndex));
         } else {
@@ -84,7 +96,6 @@ public class Robot {
                     Integer.valueOf(currTask.getIndex()),
                     Integer.valueOf(currTask.getRemainingLength())));
         }
-        return true;
     }
 
     private void setFinished() {

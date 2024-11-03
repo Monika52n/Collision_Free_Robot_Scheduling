@@ -14,7 +14,6 @@ public class RobotColApplication extends Application {
     RobotStage robotStage;
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle("Robots and Tasks");
         robotStage = new RobotStage(stage);
         stage.show();
     }

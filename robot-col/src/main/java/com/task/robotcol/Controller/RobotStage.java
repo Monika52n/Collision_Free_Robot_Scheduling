@@ -3,21 +3,37 @@ package com.task.robotcol.Controller;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class RobotStage {
     private final RobotColController robotColController = new RobotColController();
     private final Stage stage;
+    private final StackPane stackPane;
+
     public RobotStage(Stage stage) {
         this.stage = stage;
+        stage.setTitle("Robots and Tasks");
+        stage.setMaximized(true);
+        stackPane = new StackPane();
+        createInputForm();
+        stage.setScene(new Scene(stackPane));
+        robotColController.newSimulationButton.setOnAction(actionEvent -> {
+                createInputForm();
+        });
     }
 
-    private Scene createInputForm() {
-        HBox formLayout = new HBox(10);
+    private void createInputForm() {
+        VBox formLayout = new VBox(10);
         formLayout.setAlignment(Pos.CENTER);
+
+        HBox inputLayout = new HBox(10);
+        inputLayout.setAlignment(Pos.CENTER);
 
         Label verticesLabel = new Label("Vertices:");
         TextField verticesInput = new TextField();
@@ -31,21 +47,45 @@ public class RobotStage {
         TextField robotsInput = new TextField();
         robotsInput.setPrefWidth(50);
 
+        CheckBox customParamCheckBox = new CheckBox("Custom Parameter");
+
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red;");
+
+        Button generateButton = createGenerateButton(verticesInput, tasksInput, robotsInput, customParamCheckBox, errorLabel);
+
+        inputLayout.getChildren().addAll(
+                verticesLabel, verticesInput,
+                tasksLabel, tasksInput,
+                robotsLabel, robotsInput,
+                customParamCheckBox, generateButton
+        );
+        formLayout.getChildren().addAll(inputLayout, errorLabel);
+        stackPane.getChildren().setAll(formLayout);
+    }
+
+    private Button createGenerateButton(TextField verticesInput, TextField tasksInput, TextField robotsInput, CheckBox customParamCheckBox, Label errorLabel) {
         Button generateButton = new Button("Generate");
         generateButton.setOnAction(event -> {
-                stage.setScene(robotColController.initializeGraph(
-                    Integer.parseInt(verticesInput.getText()),
-                    Integer.parseInt(tasksInput.getText()),
-                    Integer.parseInt(robotsInput.getText()),
-                    false));
-                stage.show();
+            try {
+                int vertices = Integer.parseInt(verticesInput.getText());
+                int tasks = Integer.parseInt(tasksInput.getText());
+                int robots = Integer.parseInt(robotsInput.getText());
+                boolean customParam = customParamCheckBox.isSelected();
+
+                if (vertices < robots || vertices < tasks) {
+                    errorLabel.setText("Error: The number of vertices must be greater than or equal to the number of robots and tha number of tasks.");
+                } else {
+                    errorLabel.setText("");
+                    stackPane.getChildren().setAll(robotColController.initializeGraph(vertices, robots, tasks, customParam));
+                }
+            } catch (NumberFormatException e) {
+                errorLabel.setText("Invalid input, please enter integers.");
             }
-        );
-
-        formLayout.getChildren().addAll(verticesLabel, verticesInput, tasksLabel, tasksInput, robotsLabel, robotsInput, generateButton);
-
-        return new Scene(formLayout, 600, 400);
+        });
+        return generateButton;
     }
+
 
     public Stage getStage() {
         return stage;
