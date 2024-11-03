@@ -108,13 +108,13 @@ public class RobotColController {
 
     private PathNode createPathNodeOnIndex(int i) {
         PathNode pathNode = new PathNode(
-            kRobotPathGraph.getRobotNum(i),
-            kRobotPathGraph.getTaskNum(i),
-            kRobotPathGraph.getTaskLength(i),
-            i,
-            columns,
-            gaps,
-            circleRadius);
+                kRobotPathGraph.getRobotNum(i),
+                kRobotPathGraph.getTaskNum(i),
+                kRobotPathGraph.getTaskLength(i),
+                i,
+                columns,
+                gaps,
+                circleRadius);
         pathNodes.add(pathNode);
         return pathNode;
     }

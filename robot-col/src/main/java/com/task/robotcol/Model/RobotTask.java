@@ -39,4 +39,9 @@ public class RobotTask {
     public int getTaskNum() {
         return taskNum;
     }
+
+    public int getLength() {
+        return length;
+    }
+
 }
