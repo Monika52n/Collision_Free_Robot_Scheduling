@@ -33,14 +33,14 @@ public class Robot {
 
     public void setTasks(ArrayList<RobotTask> tasks) {
         this.tasks = tasks;
-        if((startFromFirst && tasks.getFirst().getIndex()>=index) ||
-           (!startFromFirst && tasks.getLast().getIndex()<=index)) {
-            isRobotNotAtStartPosition = false;
-        }
     }
 
     public void setStartFromFirst(Boolean startFromFirst) {
         this.startFromFirst = startFromFirst;
+        if((startFromFirst && tasks.getFirst().getIndex()>=index) ||
+                (!startFromFirst && tasks.getLast().getIndex()<=index)) {
+            isRobotNotAtStartPosition = false;
+        }
     }
 
     public ArrayList<RobotTask> getTasks() {
