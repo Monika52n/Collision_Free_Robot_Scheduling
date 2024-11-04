@@ -169,7 +169,9 @@ public class KRobotPathGraph {
         for(Robot robot : robots) {
             robot.makeAMove();
             if(!robot.isFinished()) isFinished = false;
-            steps += robot.getStepsAndTasksTime();
+            if(steps<robot.getStepsAndTasksTime()) {
+                steps = robot.getStepsAndTasksTime();
+            }
         }
         if(isFinished) {
             simulationEnded.handle(new SimulationEndedEventArgs(steps));

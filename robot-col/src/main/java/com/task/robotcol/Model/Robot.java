@@ -8,7 +8,7 @@ public class Robot {
     private int index;
     private final int startIndex;
     private boolean startFromFirst;
-    private boolean isFinished = false;
+    private boolean isFinished = true;
     private int stepsAndTasksTime = 0;
     private final int robotNum;
     private ArrayList<RobotTask> tasks = new ArrayList<>();
@@ -31,6 +31,9 @@ public class Robot {
 
     public void setTasks(ArrayList<RobotTask> tasks) {
         this.tasks = tasks;
+        if(tasks!=null && !tasks.isEmpty()) {
+            isFinished = false;
+        }
     }
 
     public void setStartFromFirst(Boolean startFromFirst) {
