@@ -86,13 +86,15 @@ public class Robot {
 
     private void handleGameStep(RobotTask currTask, int prevIndex) {
         if(currTask==null) {
-            gameAdvanced.handle(new RobotEventArgs(index, prevIndex));
+            gameAdvanced.handle(new RobotEventArgs(index, prevIndex, robotNum));
         } else {
             gameAdvanced.handle(new RobotEventArgs(
                     index,
                     prevIndex,
                     Integer.valueOf(currTask.getIndex()),
-                    Integer.valueOf(currTask.getRemainingLength())));
+                    Integer.valueOf(currTask.getRemainingLength()),
+                    robotNum
+            ));
         }
     }
 

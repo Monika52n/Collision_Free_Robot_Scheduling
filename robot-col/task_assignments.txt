@@ -1,31 +1,69 @@
 Initial Task Positions:
-Task 1 is at index 3 with length 1
-Task 3 is at index 8 with length 1
-Task 5 is at index 9 with length 1
-Task 7 is at index 10 with length 1
-Task 8 is at index 11 with length 1
-Task 10 is at index 15 with length 1
-Task 0 is at index 16 with length 1
-Task 2 is at index 21 with length 1
-Task 4 is at index 24 with length 1
-Task 6 is at index 26 with length 1
-Task 9 is at index 30 with length 1
+Task 1 is at index 1 with length 1
+Task 4 is at index 3 with length 1
+Task 6 is at index 4 with length 1
+Task 7 is at index 5 with length 1
+Task 9 is at index 6 with length 1
+Task 10 is at index 7 with length 1
+Task 12 is at index 8 with length 1
+Task 14 is at index 15 with length 1
+Task 15 is at index 19 with length 1
+Task 16 is at index 21 with length 1
+Task 17 is at index 22 with length 1
+Task 18 is at index 23 with length 1
+Task 19 is at index 25 with length 1
+Task 20 is at index 27 with length 1
+Task 21 is at index 30 with length 1
+Task 22 is at index 31 with length 1
+Task 0 is at index 32 with length 1
+Task 2 is at index 33 with length 1
+Task 3 is at index 34 with length 1
+Task 5 is at index 35 with length 1
+Task 8 is at index 38 with length 1
+Task 11 is at index 40 with length 1
+Task 13 is at index 43 with length 1
 
 Task Assignments:
-Robot 1 has been assigned the following tasks:
-- Task 1 at index 3
-- Task 3 at index 8
-- Task 5 at index 9
-- Task 7 at index 10
+Robot 8 has been assigned the following tasks:
+- Task 1 at index 1
+- Task 4 at index 3
+- Task 6 at index 4
 
-Robot 0 has been assigned the following tasks:
-- Task 8 at index 11
-- Task 10 at index 15
-- Task 0 at index 16
-- Task 2 at index 21
+Robot 9 has been assigned the following tasks:
+- Task 7 at index 5
+- Task 9 at index 6
+- Task 10 at index 7
+
+Robot 3 has been assigned the following tasks:
+- Task 12 at index 8
+- Task 14 at index 15
+- Task 15 at index 19
+
+Robot 4 has been assigned the following tasks:
+- Task 16 at index 21
+- Task 17 at index 22
+- Task 18 at index 23
+
+Robot 5 has been assigned the following tasks:
+- Task 19 at index 25
+- Task 20 at index 27
+- Task 21 at index 30
+
+Robot 1 has been assigned the following tasks:
+- Task 22 at index 31
+- Task 0 at index 32
+- Task 2 at index 33
 
 Robot 2 has been assigned the following tasks:
-- Task 4 at index 24
-- Task 6 at index 26
-- Task 9 at index 30
+- Task 3 at index 34
+- Task 5 at index 35
+
+Robot 6 has been assigned the following tasks:
+- Task 8 at index 38
+- Task 11 at index 40
+
+Robot 7 has been assigned the following tasks:
+- Task 13 at index 43
+
+Robot 0 has been assigned the following tasks:
 
