@@ -41,10 +41,12 @@ public class RobotColController {
             if (robotEventArgs.getPrevIndex() != robotEventArgs.getNextIndex()) {
                 PathNode prevNode = pathNodes.get(robotEventArgs.getPrevIndex());
                 PathNode nextNode = pathNodes.get(robotEventArgs.getNextIndex());
-                nextNode.setRobotNum(prevNode.getRobotNum());
-                prevNode.setRobotNum(null);
+                nextNode.setRobotNum(Integer.valueOf(robotEventArgs.getRobotNum()));
                 nextNode.refreshText();
-                prevNode.refreshText();
+                if(prevNode.getRobotNum()==robotEventArgs.getRobotNum()) {
+                    prevNode.setRobotNum(null);
+                    prevNode.refreshText();
+                }
             }
             if (robotEventArgs.getCurTaskIndex() != null && robotEventArgs.getCurTaskLength() != null) {
                 PathNode taskNode = pathNodes.get(robotEventArgs.getCurTaskIndex());

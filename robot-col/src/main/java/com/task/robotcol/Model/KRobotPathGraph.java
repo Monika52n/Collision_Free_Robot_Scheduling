@@ -45,6 +45,9 @@ public class KRobotPathGraph {
         }
         robotTaskManager.sortRobotTaskByIndex(tasks);
         devideTasksForRobots();
+        for(Robot robot : robots) {
+            oneRobot(robot);
+        }
     }
 
     /*private void devideTasksForRobots() {
@@ -161,11 +164,11 @@ public class KRobotPathGraph {
 
 
     public void makeAMove() {
-        boolean isFinished = false;
+        boolean isFinished = true;
         int steps = 0;
         for(Robot robot : robots) {
             robot.makeAMove();
-            if(robot.isFinished()) isFinished = true;
+            if(!robot.isFinished()) isFinished = false;
             steps += robot.getStepsAndTasksTime();
         }
         if(isFinished) {
@@ -174,7 +177,8 @@ public class KRobotPathGraph {
     }
 
     private void oneRobot(Robot robot) {
-        robot.setStartFromFirst(abs(robot.getStartIndex() - robot.getTasks().getLast().getIndex()) > abs(robot.getStartIndex() - robot.getTasks().getFirst().getIndex()));
+        if(robot.getTasks()!=null && !robot.getTasks().isEmpty())
+            robot.setStartFromFirst(abs(robot.getStartIndex() - robot.getTasks().getLast().getIndex()) > abs(robot.getStartIndex() - robot.getTasks().getFirst().getIndex()));
     }
 
     public void setStepHandlers(EventHandler<RobotEventArgs> stepHandler) {
