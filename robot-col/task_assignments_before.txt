@@ -22,16 +22,16 @@ Robot 4 Start position: 15 has been assigned the following tasks:
 - Task 6 at index 9
 - Task 8 at index 11
 - Task 9 at index 13
-- Task 10 at index 14
 
 Robot 0 Start position: 17 has been assigned the following tasks:
+- Task 10 at index 14
 - Task 1 at index 20
+- Task 4 at index 23
 
 Robot 1 Start position: 22 has been assigned the following tasks:
-- Task 4 at index 23
 - Task 5 at index 25
 - Task 7 at index 26
+- Task 11 at index 31
 
 Robot 3 Start position: 29 has been assigned the following tasks:
-- Task 11 at index 31
 
