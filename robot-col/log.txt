@@ -1,0 +1,4 @@
+PathLength Robots Tasks Steps SumTaskLength
+10 1 4 17 4
+10 1 5 13 5
+10 1 1 9 6

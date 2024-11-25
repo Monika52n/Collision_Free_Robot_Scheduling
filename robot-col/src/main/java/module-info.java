@@ -3,6 +3,7 @@ module com.task.robotcol {
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
+    requires java.logging;
 
     opens com.task.robotcol to javafx.fxml;
     exports com.task.robotcol;

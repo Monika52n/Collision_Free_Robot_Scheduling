@@ -1,5 +1,6 @@
 package com.task.robotcol.Model;
 
+import com.task.robotcol.Util.FileLogger;
 import javafx.event.EventHandler;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -13,10 +14,11 @@ public class KRobotPathGraph {
     private final ArrayList<RobotTask> tasks;
     private final ArrayList<Robot> robots;
     private ArrayList<RobotTask>[] robotTasks;
-
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
     public EventHandler<SimulationEndedEventArgs> simulationEnded;
+    private final FileLogger fileLogger = new FileLogger("log.txt");
+    private boolean isEnded = false;
 
     private void revise(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
         if(pathLength<1) throw new IllegalArgumentException("Path length must be greater than 1.");
@@ -164,6 +166,7 @@ public class KRobotPathGraph {
 
 
     public void makeAMove() {
+        if(isEnded) return;
         boolean isFinished = true;
         int steps = 0;
         for(Robot robot : robots) {
@@ -174,6 +177,8 @@ public class KRobotPathGraph {
             }
         }
         if(isFinished) {
+            isEnded = true;
+            fileLogger.log(pathLength, robots.size(), tasks.size(), steps, robotTaskManager.sumTaskLength(tasks));
             simulationEnded.handle(new SimulationEndedEventArgs(steps));
         }
     }

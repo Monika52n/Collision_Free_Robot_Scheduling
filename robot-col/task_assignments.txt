@@ -1,15 +1,7 @@
 Initial Task Positions:
-Task 0 is at index 3 with length 1
-Task 1 is at index 5 with length 1
-Task 2 is at index 7 with length 1
-Task 3 is at index 8 with length 1
+Task 0 is at index 6 with length 6
 
 Task Assignments:
 Robot 0 has been assigned the following tasks:
-- Task 0 at index 3
-- Task 1 at index 5
-
-Robot 1 has been assigned the following tasks:
-- Task 2 at index 7
-- Task 3 at index 8
+- Task 0 at index 6
 

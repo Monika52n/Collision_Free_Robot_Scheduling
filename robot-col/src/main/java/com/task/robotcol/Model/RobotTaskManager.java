@@ -13,4 +13,10 @@ public class RobotTaskManager {
     public void sortRobotTaskByIndex(List<RobotTask> tasks) {
         tasks.sort((task1, task2) -> Integer.compare(task1.getIndex(), task2.getIndex()));
     }
+
+    public int sumTaskLength(List<RobotTask> tasks) {
+        return tasks.stream()
+                .mapToInt(RobotTask::getLength)
+                .sum();
+    }
 }
