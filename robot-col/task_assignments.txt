@@ -1,1 +1,9 @@
+Initial Task Positions:
+Task 0 is at index 2 with length 15
+Task 1 is at index 6 with length 2
+
+Task Assignments:
+Robot 0 Start position: 2 has been assigned the following tasks:
+- Task 0 at index 2
+- Task 1 at index 6
 
