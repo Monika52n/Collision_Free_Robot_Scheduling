@@ -47,7 +47,7 @@ public class RobotStage {
         TextField robotsInput = new TextField();
         robotsInput.setPrefWidth(50);
 
-        CheckBox customParamCheckBox = new CheckBox("Custom Parameter");
+        CheckBox customParamCheckBox = new CheckBox("Different Task Length");
 
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
