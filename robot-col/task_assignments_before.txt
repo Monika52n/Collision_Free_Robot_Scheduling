@@ -1,9 +1,33 @@
 Initial Task Positions:
-Task 0 is at index 2 with length 15
-Task 1 is at index 6 with length 2
+Task 0 is at index 1 with length 1
+Task 1 is at index 2 with length 1
+Task 4 is at index 4 with length 1
+Task 5 is at index 7 with length 1
+Task 6 is at index 8 with length 1
+Task 7 is at index 10 with length 1
+Task 8 is at index 11 with length 1
+Task 9 is at index 13 with length 1
+Task 2 is at index 18 with length 1
+Task 3 is at index 19 with length 1
 
 Task Assignments:
-Robot 0 Start position: 2 has been assigned the following tasks:
-- Task 0 at index 2
-- Task 1 at index 6
+Robot 0 Start position: 0 has been assigned the following tasks:
+- Task 0 at index 1
+- Task 1 at index 2
+
+Robot 2 Start position: 9 has been assigned the following tasks:
+- Task 4 at index 4
+- Task 5 at index 7
+
+Robot 3 Start position: 10 has been assigned the following tasks:
+- Task 6 at index 8
+- Task 7 at index 10
+
+Robot 4 Start position: 11 has been assigned the following tasks:
+- Task 8 at index 11
+- Task 9 at index 13
+
+Robot 1 Start position: 17 has been assigned the following tasks:
+- Task 2 at index 18
+- Task 3 at index 19
 
