@@ -17,7 +17,7 @@ public class KRobotPathGraph {
     private final RobotTaskManager robotTaskManager = new RobotTaskManager();
     private final RobotManager robotManager = new RobotManager();
     public EventHandler<SimulationEndedEventArgs> simulationEnded;
-    private final FileLogger fileLogger = new FileLogger("log.txt");
+    private final FileLogger fileLogger = new FileLogger("log/result.txt");
     private boolean isEnded = false;
 
     private void revise(int pathLength, Map<Integer, Integer> tasksWithLength, ArrayList<Integer> robotIndexes) {
@@ -203,7 +203,7 @@ public class KRobotPathGraph {
             robots.get(i).setTasks(robotTasks[i]);
         }
 
-        writeAssignmentsToFile("task_assignments_before.txt");
+        writeAssignmentsToFile("log/task_assignments_before.txt");
         for (int j = 0; j < tasks.size(); j++) {
             for (int i = 0; i < robots.size(); i++) {
 
@@ -269,7 +269,7 @@ public class KRobotPathGraph {
             robots.get(i).setTasks(robotTasks[i]);
         }
 
-        writeAssignmentsToFile("task_assignments.txt");
+        writeAssignmentsToFile("log/task_assignments.txt");
     }
 
 

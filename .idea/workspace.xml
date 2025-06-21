@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd77efe3-6006-409f-901b-37754609e6c4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Szamitogepes-halozatok-es-osztott-rendszerek.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/.idea/libraries/lib.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Controller/Edge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Controller/PathNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Controller/RobotColController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Controller/RobotStage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/KRobotPathGraph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/Robot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/RobotEventArgs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/RobotManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/RobotTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/RobotTaskManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Model/SimulationEndedEventArgs.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/RobotColApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/com/task/robotcol/Util/FileLogger.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/java/module-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/src/main/resources/com/task/robotcol/hello-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/task_assignments.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/robot-col/task_assignments_before.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssh.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ssh.txt.pub" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2ypjBcUekAnCIfWQ9SfUnQXMjvk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.RobotColApplication.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Acer/Desktop/repos/hálózatok/Collision_Free_Robot_Scheduling"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-249ae16d76d6-a618e4d4" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd77efe3-6006-409f-901b-37754609e6c4" name="Changes" comment="" />
+      <created>1750538276062</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750538276062</updated>
+    </task>
+    <servers />
+  </component>
+</project>

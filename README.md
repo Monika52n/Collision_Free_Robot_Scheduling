@@ -1,64 +1,96 @@
-# Számítógépes hálózatok és osztott rendszerek
+# Collision-Free Robot Scheduling
 
-## Cikk összegzés
-Megtalálható a `documentation` mappában lévő **README** file-ban. ([Navigálás a file-ra](/Documentation/README.md))
+**Szerzők: Duncan Adamson, Nathan Flaherty, Igor Potapov, Paul G. Spirakis** 
 
-## Készített szoftver
+## Abstract
 
-### Alapötlet
+Napjainkban egyre több laboratóriumi környezetben előfordulnak robotok. A cikk azt vizsgálja, hogy több, fix helyzetű
+robot esetén hogyan lehet a kiosztott feladatokat megfelelően rendezni, hogy X feladatot végző robot ne blokkolja Y robot tevékenységét.
 
-A gráfok tekinthetőek dinamikus labirintusoknak, melyben a falat a robotok képezik. A labirintus a robotok mozgásától lesz dinamikus. Mivel az a node, mely foglalt, nem közelíthető meg más robotok által, a labirintusban falat alkotnak. A labirintusból való "kijutás" helyét egy robot számára a következő elvégezendő feladat pozíciója jelöli.
+Hogy ezt illusztrálni lehessen, kell készíteni egy gráf-ot, melyen:
+- Elhelyezünk node-okat, melyek a robotok által elvégezendő feladatokat illusztrálják
+- Minden node-on pontosan egy robot állhat egy egységnyi időben
+- Minden robatnak rendelkeznie kell egy "menetrenddel", melyben az van leírva, hogy mikor hol helyezkedik el a graph-on
+- Amennyiben egy robot elfoglal egy node-ot, legalább annyi ideig ott kell maradnia, amennyi ideig tart a feladat
+- Két node között való mozgás időbe tellik, azonban a robotok várakozhatnak egy node-on a fealadt elvégzése után
+- Minden robotnak csak azokat a feladatokat kell teljesíteni, ami hozzá lett rendelve
 
-Minden lépés pontosan egy egység időt vesz igénybe a robotok számára.
+Az algoritmus célja, hogy minden robotnak meghatározzunk egy olyan "menetrendet", melyben a lehető legkevesebb lépéssel végez az összes robot és minimalizáljuk az utolsónak végző robot haladási idejét.
+Minden robot rendelkezni fog egy saját menetrenddel, mely időpillanatokból és elfoglalt helyből áll.
 
-Egy gráfot a következő képpen lehet labirintusra leképezni egy példán keresztül:
-
+**Pl:**
 ```
-Legyen Nx egy feladat, ahol X jelöli a feladat idejét. Két Nx közöttí úton a szám a két feladat közti távolságot jelöli.
-Tegyük fel, hogy a program inicializásakor 2 robot van a "pályán". Az egyik a középső node-on, míg a másik a jobb alsó sarokban helyezkedik el és a középen álló robot olyan node-on áll, mely egy számára elvégezendő feladatot "rejt". A jobb alsó node-on álló robot számára a középső bal node tartalmazza következő feladatot.
-Az első ciklusban a középső robot (továbbiakban R1) felismeri, hogy egy elvégezendő feladaton áll, így elkezdi csinálni. A jobb alsó sarokban lévő robot (továbbiakban R2) ismervén a hozzárendelt feladatok pozícióját, "felfedezésre" indul a gráf labirintusban.
+Három robot esetén:
+Robot 1: 5 egységnyi ideig fut
+Robot 2: 7 egységnyi ideig fut
+Robot 3: 10 egységnyi ideig fut
 
-Az első ciklusban elindul a felfelé, mivel az tűnik a legrövidebb útnak (mivel minden el nem végezendő feladat csak 1 egységnyi időt vesz igénybe az áthaladás), hiszen a következő lépéseket követve: [fel, balra, balra] összesen 9 egység időt vesz igénybe a célba jutás. Lefut 5 ciklus és megérkezik a középső node-hoz, melyen R1 még 3 ciklusig feladatot végez, így R2-nek újra kell gondolnia az útvonalat.
-
-Mivel az eltelt 5 ciklus alatt minden robot gondolkozik, hogy merre menjen, R2 kap egy "joker"-t, miszerint 5 cikluson keresztül gondolkozhat, anélkül, hogy a többiek tovább lépnének. Íj módon figyelembe véve azt, hogy melyik út nem célra vezető újra tervezhet, viszont mégse lesz lemaradva a többiekhez képest.
-
-Ezzel felmerül a probléma, hogy mivan akkor, ha egy másik robot már volt az új úton amit R2 tervez megtenni. Annak érdekében, hogy ez ne fordulhasson elő, minden node rendelkezik egy pontosan olyan hosszú listával, amennyi idő egységig elhelyezkedett rajta egy robot. Ebben a listában az objektumok tárolják, hogy ki és mikor helyezkedett el rajta. Így mikor R2 újra tervez, le tudja ellenőrizni a node-ot, hogy amikor ő a 3. ciklusban eléri az alsó, középen lévő node-ot, foglalt volt-e. Amennyiben igen, úgy ismét kap 5 ciklusnyi időt, hogy újra számolja az útvonalát, azonban ezúttal ismerni fogja mind a 2 "zsákutcát".
-
-Amennyiben az új út, melyet R2 talált még nincs blokkolva az 5. ciklusig (AKA 5. idő pillanatig), úgy a számláló tovább megy minden robot számára. Amennyiben egy robot számára elfogyott az utolsó elvégezendő feladat is, úgy ott marad az utolsó node-on, ahol végezte a feladatát.
-
-Az algoritmus akkor ér véget, ha minden a gráfon elhelyezkedő robot elvégezte a számára kiosztott összes feladatot.
-
-N1--4--N3--2--N1 
-|      |      |
-2      2      3
-|      |      |
-N1--2--N8--2--N1
-|      |      |
-4      2      2
-|      |      |
-N5--3--N4--2--N3
+A tényleges futási idő 10 egység volt. A cél, hogy úgy alkossuk meg a "menetrendeket", hogy a 3. robot kevesebb idő alatt végezzen.
 ```
 
-Ezzel a módszerrel végtelen mennyiségű node- és legfeljebb annyi robot, ahány node adható meg. A végeredmény egy minden robot számára optimális út lesz, melyben elvégzik az összes számukra kijelölt feladatot. Minden robot saját maga tárolja az útvonalát, majd az algoritmus az életciklusa végén begyűjti az összes robottól az adatot és egy listát készít belőle, melyben a leghosszabb lista lesz a teljes futási idő hossza.
+#### A képen feladatok és robotok találhatóak. A kékkel színezett node-ok jelentik a robotok által elfoglalt pozíciót, míg a pirossal színezett node-ok a feladatok helyét jelzik, ahol a piros szám a feladat hosszát jelöli
 
-Mivel a cikk célja az optimalizáció, így az algoritmust le kell lehessen futtattani egy robotra is. Amennyiben ez megvalósul, az utolsó (leglassabban végző robot) számára lehet építeni egy pályát a többi robot listája alapján, azonban most egyedül lesz "játékos". A többiek X időben foglalt helye statikus és nem változtatható, így a leglassabb robot egyedül keres optimálisabb utat. Amennyiben talál és az rövidebb ideig tart, mint az egyel előtte gyorsabban végző robot, úgy le kell futtatni az algoritmust arra az egy robotra is. Ez addig megy, míg a leglassabb robot már nem tud jobb útvonalat találni és ő marad a leglassabb. Ebben az esetben a probléma megoldottnak tekinthető és elkészült a legoptimálisabb útvonal minden robot számára.
+![image](https://github.com/user-attachments/assets/8309897a-296e-4f1f-8a4e-f003c896fee5)
 
-### Pseudo kód - Útkeresés
+*Kép kiemelve a cikkből*
 
-### Ismert problémák
+A cikk bizonyítja, hogy teljes, csillag, "planar", "bipartite" gráfokra vetítve ez a probléma NP-complete.
+Továbbá pozitív eredményeket mutat "line graph"-okra, miszerint található olyan optimális menetrend lista k mennyiségű robot számára,
+m mennyiségű feladat esetén (ahol a feladatok ugyan olyan hosszúak és a feladatok közti átsorolási idő mindenhol n), mely
+elvégezhető O(kmn) idő alatt. Illetve ad egy k-becslést, amikor a feladatok hossza határtalan.
 
-### Fejlesztési lehetőségek
+## Összegzés
 
-#### Dokumentációt illetően
+Fő feladat, hogy egy olyan "menetrend listát" találjunk, mely megfelel a következőknek:
+- Minden feladat elkészül egy robot által
+- 2 robot nem végezheti ugyanazt a feladatot egyszerre
+- Minimalizálva lett a leghosszabb menetrend időtartama
 
-- Pseudo kódhoz diagrammot készíteni
-- Ennek a "specifikációnak" az angol nyelvű változatának elkészítése
+### Főbb feladatok
 
-#### Algoritmust illetően
-  
-- A robotok tudjanak kommunikálni, hogy abban az esetben, hogyha egy utat blokkolnak egy másik robot elől, de csak várakoznak, akkor tudják úgy módosítani az útjukat, hogy vagy később érjenek oda, hogy a kérvényező robot elmehessen, vagy térjen az ezt követő legoptimálisabb útvonalra
-- A robotok várakozásának logikájának kitalálása és implememtálása
+- `NP-Completeness` be lett bizonyítva teljes, csillag, "planar" és "bipartite" gráfokra.
+- Egy `optimális algoritmus` lett készítve a robotok renedezésére **útgráf** esetén, ahol minden feladat n egységnyi időt vesz igénybe
+- Egy `k-becslés` algoritmus lett bemutatva olyan **útgráfok** esetén, melyeknek változó a feladata hosszúsága
+- `k-ROBOT SCHEDULING` egyenlet készült különböző gráfokra
 
-## Kapcsolódó dokumentumok
+### Komplexitás eredmények
 
-- [Az útvonal kereséshez magyarázó videó](https://www.youtube.com/watch?v=-L-WgKMFuhE&t=348s)
+- `NP-complete`-nak nevezhető
+  - teljes gráfok
+  - csillag gráfok
+  - Planar graphs
+  - Bipartite graphs
+- `Útgráfok`
+  - **Optimális algoritmus** állapítható meg n hosszúságú feladatokk esetén
+  - **k-becslés algoritmus** állapítható meg változó hosszúságú feladatok esetén
+
+### Készített algoritmusok
+
+- `Single robot scheduling`: Optimális egy robot esetén, útgráfon
+- `Two robot scheduling`: Optimális és 2-becslés megoldások két robot esetén
+- `k-robot scheduling`: Optimális egyenlő hosszúságú feladatok egy útgráf esetén és k-becslés határozható meg változó hosszúságú feladatok esetén
+
+## Konklúzió
+
+A cikk bemutatta, hogy ez valóban egy nehezen megoldható probléma még egyszerű gráfok esetén is.
+Azonban megoldható útgráfok esetén, ahol n időt vesz igénybe az összes feladat. Becslés alkalmazható olyan
+útgráfok esetén, ahol bármennyi időt felvehetnek a feladatok.
+
+A cikk végén további nyitott kérdések merülnek fel:
+- A cikk szerzői által készített algoritmust lehet-e optimalizálni vagy lehet-e készíteni optimális algoritmust
+- Hogyan működne az algoritmus a tesztnek alá nem vetett gráfokon
+
+## Szótár
+
+- **Np-problem**
+  - A problem is called NP (nondeterministic polynomial) if its solution can be guessed and verified in polynomial time; nondeterministic means that no particular rule is followed to make the guess. If a problem is NP and all other NP problems are polynomial-time reducible to it, the problem is NP-complete
+- **Polynomial time**
+  - An algorithm is said to be of polynomial time if its running time is upper bounded by a polynomial expression in the size of the input for the algorithm, that is, T(n) = O(nk) for some positive constant k
+- **Planar Graph**
+  - In graph theory, a planar graph is a graph that can be embedded in the plane, i.e., it can be drawn on the plane in such a way that its edges intersect only at their endpoints. In other words, it can be drawn in such a way that no edges cross each other.
+- **Bipartite Graph**
+  - In graph theory, a bipartite graph (or bigraph) is a graph whose vertices (or nodes) can be divided into two disjoint sets X and Y such that every edge connects a vertex in X to one in Y
+
+## Fejlesztési lehetőségek
+- A leírás angol változatának elkészítése
+- Table of content generálása
