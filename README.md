@@ -43,7 +43,7 @@ The user provides four integer inputs:
 - Number of Robots: The number of robots placed on the graph. This must also not exceed the number of nodes.
 - Variable Task Duration: A boolean value that defines whether tasks have fixed (1 unit) or variable durations.
 
-![img.png](documentation/assets/input-img.png)
+![input-img.png](documentation/assets/input-img.png)
 
 ### Example
 For example, with the following inputs:
@@ -52,7 +52,8 @@ For example, with the following inputs:
 - 1 robot
 - Fixed task duration
 
-![img.png](documentation/assets/example-img.png)
+![example-img.png](documentation/assets/example-img.png)
+
 The nodes are placed from v0 to v49. Nodes with tasks are displayed with a lighter background color, while the others use a darker background. The robot’s starting position (e.g., v5) is highlighted with a distinct border. The algorithm can be stepped through by pressing a button to progress to the next iteration.
 
 ## Structure
