@@ -28,7 +28,7 @@ For more than two robots, we use a dynamic algorithm to assign tasks in an optim
 
 ## Implementation
 
-The project is implemented in Java, using JavaFX for the graphical user interface and Maven as the build and dependency management tool.
+The application is structured using a basic Model–View architecture. The project is implemented in Java, using JavaFX for the graphical user interface and Maven as the build and dependency management tool.
 ### Program Overview
 The program implements the only type of graph for which an optimal schedule can be determined: a path graph, where the distances between adjacent nodes are equal. Based on the parameters entered by the user, the program generates a path graph, places the robots and the tasks on its nodes, and runs the scheduling algorithm.
 
@@ -57,3 +57,34 @@ For example, with the following inputs:
 The nodes are placed from v0 to v49. Nodes with tasks are displayed with a lighter background color, while the others use a darker background. The robot’s starting position (e.g., v5) is highlighted with a distinct border. The algorithm can be stepped through by pressing a button to progress to the next iteration.
 
 ## Structure
+
+### Main
+
+| File Name                | Description                                                                 |
+|--------------------------|-----------------------------------------------------------------------------|
+| `RobotColApplication.java` | The entry point of the JavaFX application. Initializes and displays the main stage. |
+
+### Model
+
+| File Name                   | Description                               |
+|----------------------------|-------------------------------------------|
+| `KRobotPathGraph.java`     | Handles the path graph structure and logic. |
+| `Robot.java`               | Represents a robot with its properties and state. |
+| `RobotEventArgs.java`      | Used to pass robot-related event data.    |
+| `RobotManager.java`        | Provides utility methods to retrieve robots by index. |
+| `RobotTask.java`           | Represents a task assigned to a robot.    |
+| `RobotTaskManager.java`    | Provides utility methods for accessing, sorting, and summarizing robot tasks.   |
+| `SimulationEndedEventArgs.java` | Signals the end of the simulation and carries summary info. |
+
+### View
+| File Name              | Description                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| `Edge.java`            | Represents an edge between two nodes in the visual graph.                   |
+| `PathNode.java`        | Represents a node (vertex) in the visual graph.                             |
+| `RobotColController.java` | JavaFX controller that handles user interaction and simulation logic.     |
+| `RobotStage.java`      | Sets up and displays the main JavaFX stage (window) of the application.     |
+
+### Util
+| File Name       | Description                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| `FileLogger.java` | Logs simulation results (path length, robot/task counts, steps) to a file for later analysis. |
