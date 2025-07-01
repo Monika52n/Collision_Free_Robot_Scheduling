@@ -1,5 +1,7 @@
 # Collision-Free Robot Scheduling
 
+This project is based on the algorithm described in the paper [**Collision-Free Robot Scheduling**](https://arxiv.org/pdf/2402.12019) by Duncan Adamson, Nathan Flaherty, Igor Potapov, and Paul G. Spirakis.
+
 ## Introduction
 
 Nowadays, robots are increasingly used in laboratory environments. This article examines how to properly schedule assigned tasks in the case of multiple fixed-position robots, in order to ensure that a robot performing task X does not block another robot performing task Y.
